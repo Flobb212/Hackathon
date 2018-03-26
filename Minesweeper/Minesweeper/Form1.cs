@@ -23,7 +23,7 @@ namespace Minesweeper
         int randY;
 
         ButtonObject[] mines;
-        int numOfMines = 50;        
+        int numOfMines = 250;        
 
         public Form1()
         {
@@ -54,6 +54,7 @@ namespace Minesweeper
                     btn.thisHereButton.Location = new System.Drawing.Point(25 + x * 25, 40 + y * 25);
                     mineContainer.Controls.Add(btn.thisHereButton);
                     btn.thisHereButton.BringToFront();
+                    btn.contans = mineContainer;
                 }
             }            
 
@@ -79,6 +80,15 @@ namespace Minesweeper
         protected void button_Click(object sender, MouseEventArgs e)
         {
             Button button = sender as Button;
+            ButtonObject bigDaddy = null;
+
+            foreach(ButtonObject target in grid)
+            {
+                if(button == target.thisHereButton)
+                {
+                    bigDaddy = target;
+                }
+            }
             
             if (e.Button == MouseButtons.Left)
             {
@@ -88,7 +98,7 @@ namespace Minesweeper
                 }
                 else
                 {
-                    EliminateSquare(button);
+                    EliminateSquare(bigDaddy);
                 }
             }
             else if(e.Button == MouseButtons.Right)
@@ -104,18 +114,19 @@ namespace Minesweeper
             }
         }
 
-        public void EliminateSquare(Button button)
+        public void EliminateSquare(ButtonObject thisGuy)
         {
             for (int x = 0; x < numOfMines; x++)
             {
-                if(mines[x].thisHereButton == button)
+                if(mines[x] == thisGuy)
                 {                    
                     MessageBox.Show("Oh no, you dun goofed it now");
-                    Reset();                    
+                    Reset();
+                    return;
                 }
                 else
                 {
-                    button.Dispose();
+                    thisGuy.Clearing(new List<ButtonObject>(), mines);
                 }
             }
         }
