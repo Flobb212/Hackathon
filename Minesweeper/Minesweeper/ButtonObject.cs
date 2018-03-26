@@ -22,11 +22,13 @@ namespace Minesweeper
 
             if (numNeighbourBombs > 0)
             {
-                TextBox val = new TextBox();
+                Label val = new Label();
                 val.Width = 25;
                 val.Height = 25;
                 val.Text = numNeighbourBombs.ToString();
                 val.Location = new System.Drawing.Point(25 + xPos * 25, 40 + yPos * 25);
+                val.BackColor = System.Drawing.Color.Aqua;
+                val.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
                 val.BringToFront();
                 contans.Controls.Add(val);
                 thisHereButton.Dispose();

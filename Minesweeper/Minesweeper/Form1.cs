@@ -12,7 +12,7 @@ namespace Minesweeper
 {
     public partial class Form1 : Form
     {
-        int gridX = 60;
+        int gridX = 50;
         int gridY = 25;
         ButtonObject[,] grid;
         ButtonObject btn;
@@ -23,11 +23,12 @@ namespace Minesweeper
         int randY;
 
         ButtonObject[] mines;
-        int numOfMines = 250;        
+        int numOfMines = 100;
 
         public Form1()
         {
             InitializeComponent();
+            numOfMines = (int)((gridX * gridY)/8); 
             grid = new ButtonObject[gridX, gridY];
             Reset();
         }
@@ -42,7 +43,7 @@ namespace Minesweeper
                 {
                     btn = new ButtonObject();
                     btn.thisHereButton = new Button();
-                    
+
                     buttonDefault = default(Color);
                     btn.thisHereButton.BackColor = buttonDefault;
                     btn.xPos = x;
@@ -56,17 +57,17 @@ namespace Minesweeper
                     btn.thisHereButton.BringToFront();
                     btn.contans = mineContainer;
                 }
-            }            
+            }
 
             rnd = new Random();
             mines = new ButtonObject[numOfMines];
 
             for (int x = 0; x < numOfMines; x++)
             {
-                randX = rnd.Next(0, 60);
-                randY = rnd.Next(0, 25);
+                randX = rnd.Next(0, gridX);
+                randY = rnd.Next(0, gridY);
                 mines[x] = grid[randX, randY];
-                
+
                 grid[randX, randY].thisHereButton.BackColor = Color.Red;
             }
 
@@ -82,17 +83,17 @@ namespace Minesweeper
             Button button = sender as Button;
             ButtonObject bigDaddy = null;
 
-            foreach(ButtonObject target in grid)
+            foreach (ButtonObject target in grid)
             {
-                if(button == target.thisHereButton)
+                if (button == target.thisHereButton)
                 {
                     bigDaddy = target;
                 }
             }
-            
+
             if (e.Button == MouseButtons.Left)
             {
-                if(button.BackColor == Color.Green)
+                if (button.BackColor == Color.Green)
                 {
                     return;
                 }
@@ -101,7 +102,7 @@ namespace Minesweeper
                     EliminateSquare(bigDaddy);
                 }
             }
-            else if(e.Button == MouseButtons.Right)
+            else if (e.Button == MouseButtons.Right)
             {
                 if (button.BackColor == Color.Green)
                 {
@@ -116,18 +117,19 @@ namespace Minesweeper
 
         public void EliminateSquare(ButtonObject thisGuy)
         {
-            for (int x = 0; x < numOfMines; x++)
+            if (mines.Contains(thisGuy))
             {
-                if(mines[x] == thisGuy)
-                {                    
-                    MessageBox.Show("Oh no, you dun goofed it now");
-                    Reset();
-                    return;
-                }
-                else
+                foreach (ButtonObject mine in mines)
                 {
-                    thisGuy.Clearing(new List<ButtonObject>(), mines);
+                    mine.thisHereButton.BackColor = Color.Red;
                 }
+
+                MessageBox.Show("Oh no, you dun goofed it now");
+                Reset();
+            }
+            else
+            {
+                thisGuy.Clearing(new List<ButtonObject>(), mines);
             }
         }
 
