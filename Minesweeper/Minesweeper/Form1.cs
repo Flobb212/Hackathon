@@ -68,7 +68,7 @@ namespace Minesweeper
                 randY = rnd.Next(0, gridY);
                 mines[x] = grid[randX, randY];
 
-                grid[randX, randY].thisHereButton.BackColor = Color.Red;
+                //grid[randX, randY].thisHereButton.BackColor = Color.Red;
             }
 
             foreach (ButtonObject subject in grid)
